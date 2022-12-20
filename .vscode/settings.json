@@ -1,0 +1,19 @@
+{
+    "cmake.configureOnOpen": true,
+    "files.associations": {
+        "*.excalidraw": "json",
+        "*.excalidrawlib": "json",
+        "deque": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "locale": "cpp",
+        "typeinfo": "cpp",
+        "sstream": "cpp",
+        "valarray": "cpp",
+        "utility": "cpp",
+        "map": "cpp",
+        "associative_base": "cpp",
+        "algorithm": "cpp",
+        "serstream": "cpp"
+    }
+}
