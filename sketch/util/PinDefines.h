@@ -1,3 +1,6 @@
+#ifndef PIN_DEFINES_H
+#define PIN_DEFINES_H
+
 #define RGB_STRIP_PIN 11
 // controls
 #define K0_PIN A0
@@ -22,3 +25,4 @@
 void setPinStates()
 {
 }
+#endif

@@ -8,16 +8,11 @@ class SolidColor : public AbstractColorMode
 {
 public:
     const byte id = SOLID_COLOR_ID;
-    const char name[17] = "Solid Color";
-    const byte icon[8] = {
-        0b11111111,
-        0b11111111,
-        0b11111111,
-        0b11111111,
-        0b11111111,
-        0b11111111,
-        0b11111111,
-        0b11111111};
+    LCD_LINE name() { return LCD_LINE{"Solid Color"}; }
+    byte *icon()
+    {
+        return _icon;
+    }
     uint32_t getColor(int _, KeyData &key_data, InputState &input_state)
     {
         if (key_data.is_held)
@@ -36,7 +31,7 @@ public:
     }
     LCD_LINE showSettings(bool is_tabbed, InputState &input_state)
     {
-        LCD_LINE rtrn = LCD_LINE{.str = ""};
+        LCD_LINE rtrn = LCD_LINE{""};
         snprintf(rtrn.str, 17, "C2: #%06x",
                  rgbw_to_uint32(
                      RGBWPixel{
@@ -48,5 +43,14 @@ public:
     }
 
 private:
+    byte _icon[8] = {
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111,
+        0b11111111};
 };
 #endif

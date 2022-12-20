@@ -5,16 +5,15 @@ class Gradient : public AbstractColorMode
 {
 public:
     const byte id = GRADIENT_ID;
-    const char name[17] = "Gradient";
-    const byte icon[8] = {
-        0b00000001,
-        0b00000010,
-        0b00000100,
-        0b00001000,
-        0b00010000,
-        0b00100000,
-        0b01000000,
-        0b10000000};
+    LCD_LINE name()
+    {
+        return LCD_LINE{"Gradient"};
+    }
+
+    byte *icon()
+    {
+        return _icon;
+    }
     Gradient()
     {
         _c1 = 0xffffff00;
@@ -45,7 +44,7 @@ public:
     }
     LCD_LINE showSettings(bool is_tabbed)
     {
-        LCD_LINE rtrn = LCD_LINE{.str = ""};
+        LCD_LINE rtrn = LCD_LINE{""};
         if (is_tabbed)
         {
             snprintf(rtrn.str, 17, "C2: #%06x", _c2);
@@ -61,5 +60,14 @@ private:
     bool _is_tabbed();
     uint32_t _c1;
     uint32_t _c2;
+    byte _icon[8] = {
+        0b00000001,
+        0b00000010,
+        0b00000100,
+        0b00001000,
+        0b00010000,
+        0b00100000,
+        0b01000000,
+        0b10000000};
 };
 #endif

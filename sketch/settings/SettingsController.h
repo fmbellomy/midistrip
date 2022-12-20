@@ -26,14 +26,14 @@ public:
     void display_lcd(InputState &input_state)
     {
         char top[17];
-        strncmp(_mode_list[_index].name, top, 17);
+        strncmp(_mode_list[_index].name().str, top, 17);
         char bottom[17];
         strncmp(_mode_list[_index].showSettings(_tabbed, input_state).str, bottom, 17);
         _lcd.show(top, bottom);
     }
     void display_dotmatrix()
     {
-        _dotmatrix.draw(_mode_list[_index].icon);
+        _dotmatrix.draw(_mode_list[_index].icon());
     }
     void shift_list(byte direction)
     {

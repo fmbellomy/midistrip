@@ -23,18 +23,40 @@
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 #define DECAY(a) (MAX((a - 1) & 0xFF, 0))
-typedef struct LCD_LINE
+struct LCD_LINE
 {
     char str[17];
 };
 class AbstractColorMode
 {
 public:
-    byte id;
-    char name[17];
-    byte icon[8];
-    virtual LCD_LINE showSettings(bool is_tabbed, InputState &input_state);
-    virtual uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed);
+    LCD_LINE name()
+    {
+        return LCD_LINE{"NULL"};
+    }
+    byte *icon()
+    {
+        return _icon;
+    }
+    LCD_LINE showSettings(bool is_tabbed, InputState &input_state)
+    {
+        return LCD_LINE{"NULL"};
+    }
+    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    {
+        return 0xffffff00;
+    }
+
+private:
+    byte _icon[8] = {
+        0b11111111,
+        0b11000011,
+        0b10100101,
+        0b10011001,
+        0b10011001,
+        0b10100101,
+        0b11000011,
+        0b11111111};
 };
 
-#endif ABSTRACT_MODE_H
+#endif
