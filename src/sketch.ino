@@ -2,7 +2,6 @@
 
 #include <USB-MIDI.h>
 #include <Adafruit_NeoPixel.h>
-#include <map>
 #include "settings/SettingsController.h"
 #include "util/PinDefines.h"
 #include "util/KeyData.h"

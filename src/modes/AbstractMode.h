@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <Adafruit_NeoPixel.h>
-#include <bitset>
 #include "Modes.h"
 #include "../util/KeyData.h"
 #include "../util/RGBWPixel.h"
