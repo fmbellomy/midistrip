@@ -1,7 +1,7 @@
 {
-    "sketch": "src\\sketch.ino",
+    "sketch": "sketch\\sketch.ino",
     "output": "build",
     "board": "arduino:avr:uno",
     "programmer": "arduino:arduinoisp",
-    "port": "COM1"
+    "port": "COM3"
 }
