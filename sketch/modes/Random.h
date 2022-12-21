@@ -15,7 +15,8 @@ public:
     }
     uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
-        return 0xffffffff;
+        uint32_t color = random();
+        return color + (~color & 0xff);
     }
     LCD_LINE showSettings(bool is_tabbed)
     {

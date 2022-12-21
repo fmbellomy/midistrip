@@ -2,7 +2,7 @@
 #include <USBCore.h>
 #include <HID.h>
 #include <PluggableUSB.h>
-// tricking MIDIUSB into letting me do as I please.
+//  tricking MIDIUSB into letting me do as I please.
 #include <USB-MIDI.h>
 #include <Adafruit_NeoPixel.h>
 #include "settings/SettingsController.h"
