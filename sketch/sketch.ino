@@ -19,12 +19,14 @@ void handle_note_off(byte, byte, byte);
 
 SettingsController settings;
 
+#define pitch_to_pixel(X) (((X - 21) * NUM_PIXELS) / 88.0)
 KeyData key_pixels[NUM_PIXELS];
 
 InputState input_state;
 bool last_tab_state;
 bool last_right_state;
 bool last_left_state;
+
 void process_inputs()
 {
     if (!last_right_state && input_state.right)
@@ -81,11 +83,9 @@ void loop()
     {
         uint32_t new_color = settings.get_color(key_pixels[i], input_state);
         key_pixels[i].previous_color = new_color;
-        strip.setPixelColor(key_pixels[i].pitch, new_color);
+        strip.setPixelColor(i, new_color);
     }
 }
-
-#define pitch_to_pixel(X) (((X - 21) * NUM_PIXELS) / 88.0)
 
 void handle_note_on(byte _, byte pitch, byte velocity)
 {
