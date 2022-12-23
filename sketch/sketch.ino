@@ -54,7 +54,7 @@ void process_inputs()
 
 void setup()
 {
-    setPinStates();
+    set_pin_states();
     last_tab_state = digitalRead(BUTTON_TAB_PIN);
     last_right_state = digitalRead(BUTTON_RIGHT_PIN);
     last_left_state = digitalRead(BUTTON_LEFT_PIN);
