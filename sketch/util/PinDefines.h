@@ -22,7 +22,7 @@
 #define LCD_D6 8
 #define LCD_D7 9
 
-void setPinStates()
+[[deprecated("`util/PinDefines.h::setPinStates()` has not been implemented! Configure it to fit your board!")]] void setPinStates()
 {
 }
 #endif
