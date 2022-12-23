@@ -19,16 +19,23 @@ public:
         _lcd = LCDController();
         _dotmatrix = DotMatrixController();
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state)
+    uint32_t get_color(KeyData &key_data, InputState &input_state)
     {
-        return _mode_list[_index].getColor(key_data, input_state, _tabbed);
+        if (key_data.is_held)
+        {
+            return _mode_list[_index].get_color(key_data, input_state, _tabbed);
+        }
+        else
+        {
+            return DECAY(key_data.previous_color);
+        }
     }
     void display_lcd(InputState &input_state)
     {
         char top[17];
-        strncmp(_mode_list[_index].name().str, top, 17);
+        strncpy(_mode_list[_index].name().str, top, 17);
         char bottom[17];
-        strncmp(_mode_list[_index].showSettings(_tabbed, input_state).str, bottom, 17);
+        strncpy(_mode_list[_index].show_settings(_tabbed, input_state).str, bottom, 17);
         _lcd.show(top, bottom);
     }
     void display_dotmatrix()

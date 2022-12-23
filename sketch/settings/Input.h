@@ -9,6 +9,10 @@ struct InputState
     uint8_t G;
     uint8_t B;
     uint8_t W;
+    operator uint32_t() const
+    {
+        return (this->R << 24) + (this->G << 16) + (this->B << 8) + this->W;
+    }
 };
 class Knob
 {

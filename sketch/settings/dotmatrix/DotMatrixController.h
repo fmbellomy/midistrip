@@ -2,7 +2,7 @@
 #define DOT_MATRIX_CONTROLLER_H
 #include <LedControl.h>
 #include "../../util/PinDefines.h"
-const byte heart[8] PROGMEM = {
+const byte heart[8] = {
     0b01100110,
     0b11111111,
     0b11111011,

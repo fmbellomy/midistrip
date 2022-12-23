@@ -13,32 +13,14 @@ public:
     {
         return _icon;
     }
-    uint32_t getColor(int _, KeyData &key_data, InputState &input_state)
+    uint32_t get_color(int _, KeyData &key_data, InputState &input_state)
     {
-        if (key_data.is_held)
-        {
-            return rgbw_to_uint32(
-                RGBWPixel{
-                    .R = input_state.R,
-                    .G = input_state.G,
-                    .B = input_state.B,
-                    .W = input_state.W});
-        }
-        else
-        {
-            return DECAY(key_data.previous_color);
-        }
+        return (uint32_t)input_state;
     }
-    LCD_LINE showSettings(bool is_tabbed, InputState &input_state)
+    LCD_LINE show_settings(bool is_tabbed, InputState &input_state)
     {
         LCD_LINE rtrn = LCD_LINE{""};
-        snprintf(rtrn.str, 17, "C2: #%06x",
-                 rgbw_to_uint32(
-                     RGBWPixel{
-                         .R = input_state.R,
-                         .G = input_state.G,
-                         .B = input_state.B,
-                         .W = input_state.W}));
+        snprintf(rtrn.str, 17, "Color: #%08" PRIx32, (uint32_t)input_state);
         return rtrn;
     }
 

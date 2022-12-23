@@ -16,33 +16,26 @@ public:
     {
         return _icon;
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
         ++_count;
-        if (key_data.is_held)
+        _update_color(is_tabbed, (uint32_t)input_state);
+        RGBWPixel a = RGBWPixel(_c1);
+        RGBWPixel b = RGBWPixel(_c2);
+        int c2_mid = _count % 88;
+        if (key_data.pitch <= c2_mid)
         {
-            // this is quite a lot of unnecessary conversions, but hopefully the arduino can handle it.
-            RGBWPixel a = uint32_to_rgbw(_c1);
-            RGBWPixel b = uint32_to_rgbw(_c2);
-            int c2_mid = _count % 88;
-            if (key_data.pitch <= c2_mid)
-            {
-                return rgbw_to_uint32(lerp_pixel(a, b, key_data.pitch * 1.0 / (double)c2_mid));
-            }
-            else
-            {
-                return rgbw_to_uint32(lerp_pixel(b, a, (key_data.pitch - c2_mid) / 88.0 - c2_mid));
-            }
+            return (uint32_t)a.lerp(b, key_data.pitch * 1.0 / (double)c2_mid);
         }
         else
         {
-            return DECAY(key_data.previous_color);
+            return (uint32_t)b.lerp(a, (key_data.pitch - c2_mid) / 88.0 - c2_mid);
         }
     }
-    LCD_LINE showSettings(bool is_tabbed)
+    LCD_LINE show_settings(InputState &input_state)
     {
         LCD_LINE rtrn = LCD_LINE{""};
-        if (is_tabbed)
+        if (input_state.tab)
         {
             snprintf(rtrn.str, 17, "C2: #%06x", _c2);
         }
@@ -57,6 +50,17 @@ private:
     int _count;
     uint32_t _c1;
     uint32_t _c2;
+    void _update_color(bool is_tabbed, uint32_t color)
+    {
+        if (is_tabbed)
+        {
+            _c1 = color;
+        }
+        else
+        {
+            _c2 = color;
+        }
+    }
     byte _icon[8] = {
         0b00000111,
         0b00000011,

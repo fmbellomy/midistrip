@@ -13,12 +13,13 @@ public:
     {
         return _icon;
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
         uint32_t color = random();
-        return color + (~color & 0xff);
+        // return random color, but still use the brightness from key_data.
+        return (color - ~(color & 0xff)) + (key_data.previous_color & 0xff);
     }
-    LCD_LINE showSettings(bool is_tabbed)
+    LCD_LINE show_settings(bool is_tabbed)
     {
         return LCD_LINE{""};
     }

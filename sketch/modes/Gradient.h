@@ -20,29 +20,14 @@ public:
         _c2 = 0xffffff00;
     }
     Gradient(AbstractColorMode);
-    uint32_t getColor(KeyData &key_data, InputState &input_state)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
-        if (key_data.is_held)
-        {
-            // this is quite a lot of unnecessary conversions, but hopefully the arduino can handle it.
-            RGBWPixel a = uint32_to_rgbw(_c1);
-            RGBWPixel b = uint32_to_rgbw(_c2);
-            return rgbw_to_uint32(lerp_pixel(a, b, key_data.pitch / 87.0));
-        }
-        else
-        {
-            return DECAY(key_data.previous_color);
-        }
+        _update_color(is_tabbed, (uint32_t)input_state);
+        RGBWPixel a = RGBWPixel(_c1);
+        RGBWPixel b = RGBWPixel(_c2);
+        return (uint32_t)a.lerp(b, key_data.pitch / 87.0);
     }
-    void setFirst(uint32_t c1)
-    {
-        _c1 = c1;
-    }
-    void setSecond(uint32_t c2)
-    {
-        _c2 = c2;
-    }
-    LCD_LINE showSettings(bool is_tabbed)
+    LCD_LINE show_settings(bool is_tabbed, InputState &input_state)
     {
         LCD_LINE rtrn = LCD_LINE{""};
         if (is_tabbed)
@@ -57,9 +42,19 @@ public:
     }
 
 private:
-    bool _is_tabbed();
     uint32_t _c1;
     uint32_t _c2;
+    void _update_color(bool is_tabbed, uint32_t color)
+    {
+        if (is_tabbed)
+        {
+            _c1 = color;
+        }
+        else
+        {
+            _c2 = color;
+        }
+    }
     byte _icon[8] = {
         0b00000001,
         0b00000010,

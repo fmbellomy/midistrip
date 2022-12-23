@@ -2,62 +2,50 @@
 #define RGBWPIXEL_H
 #define NUM_PIXELS 22
 #include "../settings/Input.h"
-struct RGBWPixel
+byte lerp_channel(byte A, byte B, double distance)
 {
+    return A + distance * (A - B);
+}
+class RGBWPixel
+{
+public:
     byte R;
     byte G;
     byte B;
     byte W;
+    operator uint32_t() const
+    {
+        return (this->R << 24) + (this->G << 16) + (this->B << 8) + this->W;
+    }
+    RGBWPixel(uint32_t color)
+    {
+        R = (color >> 24) & 0xFF;
+        G = (color >> 16) & 0xFF;
+        B = (color >> 8) & 0xFF;
+        W = color & 0xFF;
+    }
+    RGBWPixel(byte r, byte g, byte b, byte w)
+    {
+        R = r;
+        G = g;
+        B = b;
+        W = w;
+    }
+    RGBWPixel(InputState input_state)
+    {
+        R = input_state.R;
+        G = input_state.G;
+        B = input_state.B;
+        W = input_state.W;
+    }
+    RGBWPixel lerp(RGBWPixel &other, double distance)
+    {
+        return (
+            RGBWPixel(
+                lerp_channel(R, other.R, distance),
+                lerp_channel(G, other.G, distance),
+                lerp_channel(B, other.B, distance),
+                lerp_channel(W, other.W, distance)));
+    }
 };
-RGBWPixel uint32_to_rgbw(uint32_t color)
-{
-    byte channels[4];
-    channels[0] = (color >> 24) & 0xFF;
-    channels[1] = (color >> 16) & 0xFF;
-    channels[2] = (color >> 8) & 0xFF;
-    channels[3] = color & 0xFF;
-
-    return RGBWPixel{
-        .R = channels[0],
-        .G = channels[1],
-        .B = channels[2],
-        .W = channels[3]};
-}
-uint32_t rgbw_to_uint32(RGBWPixel _s)
-{
-    uint32_t color;
-    color = _s.R;
-    color <<= _s.G;
-    color |= _s.G;
-    color << _s.B;
-    color |= _s.B;
-    color <<= _s.W;
-    color |= _s.W;
-    return color;
-}
-byte lerp(byte A, byte B, double distance)
-{
-    return A + distance * (A - B);
-}
-RGBWPixel lerp_pixel(RGBWPixel p1, RGBWPixel p2, double distance)
-{
-    byte R = lerp(p1.R, p2.R, distance);
-    byte G = lerp(p1.G, p2.G, distance);
-    byte B = lerp(p1.B, p2.B, distance);
-    byte W = lerp(p1.W, p2.W, distance);
-
-    return RGBWPixel{.R = R, .G = G, .B = B, .W = W};
-}
-uint32_t input_state_to_uint32(InputState &_s)
-{
-    uint32_t color;
-    color = _s.R;
-    color <<= _s.G;
-    color |= _s.G;
-    color << _s.B;
-    color |= _s.B;
-    color <<= _s.W;
-    color |= _s.W;
-    return color;
-}
 #endif

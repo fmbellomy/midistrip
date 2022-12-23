@@ -6,6 +6,7 @@ class HueFade : public AbstractColorMode
 public:
     HueFade()
     {
+        previous_color = 0xffffff00;
         count = 0;
     }
     const byte id = HUE_FADE_ID;
@@ -18,7 +19,7 @@ public:
     {
         return _icon;
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
         byte r = 0, g = 0, b = 0;
         int target = count / NUM_PIXELS * 10;
@@ -38,18 +39,17 @@ public:
             break;
         }
         ++count;
-        return rgbw_to_uint32(RGBWPixel{
-            .R = r,
-            .G = g,
-            .B = b,
-            .W = input_state.W});
+        return RGBWPixel(r, g, b, input_state.W);
     }
-    LCD_LINE showSettings(bool is_tabbed)
+    LCD_LINE show_settings(bool is_tabbed)
     {
-        return LCD_LINE{""};
+        LCD_LINE rtrn = LCD_LINE{""};
+        snprintf(rtrn.str, 17, "C2: #%06x");
+        return LCD_LINE{"#"};
     }
 
 private:
+    uint32_t previous_color;
     int count;
     byte _icon[8] = {
         0b00000000,

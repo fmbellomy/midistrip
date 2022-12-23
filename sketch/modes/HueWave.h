@@ -13,10 +13,10 @@ public:
     {
         return _icon;
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
         byte r = 0, g = 0, b = 0;
-        int target = count / ((NUM_PIXELS * 10) - (NUM_PIXELS / 2));
+        int target = count / (NUM_PIXELS * 7) - 6;
         switch (target % 3)
         {
         case 0:
@@ -33,13 +33,9 @@ public:
             break;
         }
         ++count;
-        return rgbw_to_uint32(RGBWPixel{
-            .R = r,
-            .G = g,
-            .B = b,
-            .W = input_state.W});
+        return (uint32_t)RGBWPixel(r, g, b, input_state.W);
     }
-    LCD_LINE showSettings(bool is_tabbed)
+    LCD_LINE show_settings(bool is_tabbed)
     {
         return LCD_LINE{""};
     }

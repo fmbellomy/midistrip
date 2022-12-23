@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <Adafruit_NeoPixel.h>
+#include <inttypes.h>
 #include "Modes.h"
 #include "../util/KeyData.h"
 #include "../util/RGBWPixel.h"
@@ -32,19 +33,19 @@ class AbstractColorMode
 public:
     LCD_LINE name()
     {
-        return LCD_LINE{"NULL"};
+        return LCD_LINE{"ABSTRACT"};
     }
     byte *icon()
     {
         return _icon;
     }
-    LCD_LINE showSettings(bool is_tabbed, InputState &input_state)
+    LCD_LINE show_settings(bool is_tabbed, InputState &input_state)
     {
-        return LCD_LINE{"NULL"};
+        return LCD_LINE{"ABSTRACT"};
     }
-    uint32_t getColor(KeyData &key_data, InputState &input_state, bool is_tabbed)
+    uint32_t get_color(KeyData &key_data, InputState &input_state, bool is_tabbed)
     {
-        return 0xffffff00;
+        return 0xffffffff;
     }
 
 private:

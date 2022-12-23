@@ -1,7 +1,5 @@
 
-#include <USBCore.h>
 #include <HID.h>
-#include <PluggableUSB.h>
 //  tricking MIDIUSB into letting me do as I please.
 #include <USB-MIDI.h>
 #include <Adafruit_NeoPixel.h>
@@ -16,8 +14,8 @@ Input inputs = Input(K0_PIN, K1_PIN, K2_PIN, K3_PIN,
 
 USBMIDI_CREATE_DEFAULT_INSTANCE();
 
-void handleNoteOn(byte, byte, byte);
-void handleNoteOff(byte, byte, byte);
+void handle_note_on(byte, byte, byte);
+void handle_note_off(byte, byte, byte);
 
 SettingsController settings;
 
@@ -27,7 +25,7 @@ InputState input_state;
 bool last_tab_state;
 bool last_right_state;
 bool last_left_state;
-void processInputs()
+void process_inputs()
 {
     if (!last_right_state && input_state.right)
     {
@@ -69,34 +67,34 @@ void setup()
             .pitch = 0};
     }
     strip.begin();
-    MIDI.begin(1);
+    MIDI.begin();
 }
 
 void loop()
 {
     MIDI.read();
     input_state = inputs.read_all();
-    processInputs();
+    process_inputs();
     settings.display_dotmatrix();
     settings.display_lcd(input_state);
     for (int i = 0; i < NUM_PIXELS; i++)
     {
-        uint32_t new_color = settings.getColor(key_pixels[i], input_state);
+        uint32_t new_color = settings.get_color(key_pixels[i], input_state);
         key_pixels[i].previous_color = new_color;
         strip.setPixelColor(key_pixels[i].pitch, new_color);
     }
 }
 
-#define pitch_to_pixel(X) ((int)(X - 21) * NUM_PIXELS / 88.0)
+#define pitch_to_pixel(X) (((X - 21) * NUM_PIXELS) / 88.0)
 
-void handleNoteOn(byte _, byte pitch, byte velocity)
+void handle_note_on(byte _, byte pitch, byte velocity)
 {
     byte pos = pitch_to_pixel(pitch);
     key_pixels[pos].pitch = pitch;
     key_pixels[pos].is_held = true;
     key_pixels[pos].velocity = velocity;
 }
-void handleNoteOff(byte _, byte pitch, byte velocity)
+void handle_note_off(byte _, byte pitch, byte velocity)
 {
     byte pos = pitch_to_pixel(pitch);
     key_pixels[pos].is_held = false;
